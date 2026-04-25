@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Petit Gaspri Officiel – Rappeur Villageois</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@700;900&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    /* ===== VARIABLES ===== */
+    :root {
+      --gold: #E8A020;
+      --gold-light: #F5C842;
+      --gold-dark: #B87714;
+      --green: #1E5631;
+      --green-mid: #2D7A45;
+      --green-light: #4CAF50;
+      --cream: #FFFDF4;
+      --cream2: #FFF5DC;
+      --orange: #F56B1E;
+      --brown-dark: #1C0800;
+      --brown-mid: #3D1F00;
+      --text-dark: #1A0A00;
+      --text-mid: #4A2E10;
+      --white: #FFFFFF;
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* ===== LOADER / INTRO ===== */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: var(--brown-dark);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+    #loader.hidden { opacity: 0; visibility: hidden; }
+
+    .loader-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 10vw, 7rem);
+      color: transparent;
+      background: linear-gradient(135deg, var(--gold-light), var(--orange), var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      letter-spacing: 0.1em;
+      opacity: 0;
+      transform: translateY(30px) scale(0.8);
+      animation: logoReveal 1s ease 0.3s forwards;
+    }
+    .loader-sub {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(0.7rem, 2vw, 1rem);
+      color: var(--gold-light);
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1s forwards;
+    }
+    .loader-bar {
+      width: 200px;
+      height: 2px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+    .loader-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--orange));
+      border-radius: 10px;
+      animation: barFill 1.8s ease 0.5s forwards;
+      width: 0%;
+    }
+    .loader-mic {
+      font-size: 2.5rem;
+      opacity: 0;
+      animation: micPop 0.5s ease 0.1s forwards;
+    }
+
+    @keyframes logoReveal {
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; }
+    }
+    @keyframes barFill {
+      to { width: 100%; }
+    }
+    @keyframes micPop {
+      0% { opacity: 0; transform: scale(0) rotate(-20deg); }
+      70% { transform: scale(1.3) rotate(10deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 18px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(28, 8, 0, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(232, 160, 32, 0.2);
+      transition: all 0.3s ease;
+    }
+    nav.scrolled {
+      padding: 12px 5%;
+      background: rgba(28, 8, 0, 0.98);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      color: var(--gold-light);
+      letter-spacing: 0.12em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--orange); }
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold-light); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 5px;
+    }
+    .hamburger span {
+      width: 24px; height: 2px;
+      background: var(--gold-light);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ===== HERO ===== */
+    #hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 0 5%;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--brown-dark) 0%, #2A0E00 40%, #1A3A10 100%);
+    }
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(232,160,32,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(245,107,30,0.06) 0%, transparent 40%),
+        radial-gradient(circle at 60% 80%, rgba(45,122,69,0.1) 0%, transparent 40%);
+    }
+    .hero-geo {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .hero-geo::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      border: 1px solid rgba(232,160,32,0.08);
+      animation: rotateSlow 20s linear infinite;
+    }
+    .hero-geo::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      right: 10%;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      border: 1px solid rgba(232,160,32,0.05);
+      animation: rotateSlow 30s linear infinite reverse;
+    }
+    @keyframes rotateSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Floating particles */
+    .particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .particle {
+      position: absolute;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0;
+      animation: floatParticle linear infinite;
+    }
+    @keyframes floatParticle {
+      0% { opacity: 0; transform: translateY(0) scale(0); }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.2; }
+      100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 650px;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(232,160,32,0.12);
+      border: 1px solid rgba(232,160,32,0.3);
+      color: var(--gold-light);
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 2.2s forwards;
+    }
+    .hero-tag i { color: var(--orange); }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      line-height: 0.95;
+      color: var(--white);
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: slideInLeft 1s ease 2.4s forwards;
+    }
+    .hero-title .highlight {
+      color: transparent;
+      background: linear-gradient(135deg, var(--gold-light), var(--orange));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    .hero-subtitle {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 3.5rem);
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.15em;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: slideInLeft 1s ease 2.6s forwards;
+    }
+    .hero-desc {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: rgba(255,255,255,0.7);
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 2.8s forwards;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 3s forwards;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      color: var(--white);
+      padding: 14px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 20px rgba(232,160,32,0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(232,160,32,0.5);
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 2px solid rgba(232,160,32,0.5);
+      color: var(--gold-light);
+      padding: 14px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      transition: all 0.3s;
+    }
+    .btn-outline:hover {
+      background: rgba(232,160,32,0.15);
+      border-color: var(--gold-light);
+      transform: translateY(-3px);
+    }
+
+    /* Hero image right */
+    .hero-img-wrap {
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 45%;
+      overflow: hidden;
+      opacity: 0;
+      animation: slideInRight 1.2s ease 2.5s forwards;
+    }
+    .hero-img-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--brown-dark) 0%, transparent 40%),
+                  linear-gradient(0deg, var(--brown-dark) 0%, transparent 30%);
+      z-index: 1;
+    }
+    .hero-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      filter: saturate(1.1) contrast(1.05);
+    }
+    .hero-img-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #2A1500, #1E3A15, #2A1500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-img-placeholder i {
+      font-size: 8rem;
+      color: rgba(232,160,32,0.15);
+    }
+
+    /* Hero stats */
+    .hero-stats {
+      position: absolute;
+      bottom: 50px;
+      right: 5%;
+      z-index: 3;
+      display: flex;
+      gap: 30px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 3.2s forwards;
+    }
+    .stat-item {
+      text-align: center;
+      color: white;
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 3.5s forwards;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .scroll-hint .arrow {
+      width: 24px; height: 24px;
+      border-right: 2px solid rgba(232,160,32,0.5);
+      border-bottom: 2px solid rgba(232,160,32,0.5);
+      transform: rotate(45deg);
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(6px); }
+    }
+
+    /* ===== SECTION COMMONS ===== */
+    section { padding: 100px 5%; }
+    .section-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: var(--brown-dark);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .section-title .accent { color: var(--green-mid); }
+    .section-line {
+      width: 60px; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--orange));
+      border-radius: 3px;
+      margin-bottom: 50px;
+    }
+
+    /* Reveal on scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ===== ABOUT ===== */
+    #about {
+      background: var(--cream);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-img-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 220px 220px;
+      gap: 12px;
+    }
+    .about-img-grid .img-item {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(135deg, #c8a000, #8B4513);
+    }
+    .about-img-grid .img-item:first-child {
+      grid-column: span 2;
+      grid-row: span 1;
+    }
+    .about-img-grid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .about-img-grid .img-item:hover img { transform: scale(1.05); }
+    .img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: rgba(255,255,255,0.3);
+      background: linear-gradient(135deg, #3D1F00, #1E5631);
+    }
+
+    .about-text .section-title { color: var(--brown-dark); }
+    .about-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-style: italic;
+      color: var(--green-mid);
+      line-height: 1.5;
+      border-left: 4px solid var(--gold);
+      padding-left: 20px;
+      margin: 20px 0 30px;
+    }
+    .about-body {
+      font-size: 1rem;
+      color: var(--text-mid);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .about-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(30,86,49,0.1);
+      border: 1px solid rgba(30,86,49,0.2);
+      color: var(--green);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .badge i { color: var(--gold); }
+
+    /* ===== MUSIC ===== */
+    #music {
+      background: linear-gradient(135deg, var(--brown-dark) 0%, #0D2510 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    #music .section-title { color: var(--white); }
+    #music .section-label { color: var(--gold-light); }
+    #music .section-line { background: linear-gradient(90deg, var(--gold-light), var(--orange)); }
+
+    .music-bg-pattern {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 10% 50%, rgba(232,160,32,0.05) 0%, transparent 50%),
+        radial-gradient(circle at 90% 50%, rgba(45,122,69,0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .music-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .music-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(232,160,32,0.15);
+      border-radius: 20px;
+      padding: 30px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .music-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(232,160,32,0.05), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .music-card:hover {
+      border-color: rgba(232,160,32,0.4);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    .music-card:hover::before { opacity: 1; }
+    .music-icon {
+      width: 60px; height: 60px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+      margin-bottom: 20px;
+    }
+    .music-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: var(--white);
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .music-card p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+    }
+
+    /* Spotify embed area */
+    .spotify-section {
+      position: relative;
+      z-index: 1;
+      margin-top: 60px;
+      text-align: center;
+    }
+    .spotify-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: #1DB954;
+      color: white;
+      padding: 18px 40px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 20px rgba(29,185,84,0.3);
+    }
+    .spotify-cta:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 10px 30px rgba(29,185,84,0.5);
+    }
+    .spotify-cta i { font-size: 1.4rem; }
+
+    /* ===== GALLERY ===== */
+    #gallery {
+      background: var(--cream2);
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 16px;
+    }
+    .gallery-grid .g-item {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 1;
+      cursor: pointer;
+      background: linear-gradient(135deg, #3D1F00, #1E5631);
+    }
+    .gallery-grid .g-item:nth-child(1) { grid-column: span 2; aspect-ratio: 2/1; }
+    .gallery-grid .g-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease, filter 0.5s ease;
+    }
+    .gallery-grid .g-item:hover img {
+      transform: scale(1.08);
+      filter: brightness(0.85);
+    }
+    .g-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(28,8,0,0.6) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+    }
+    .gallery-grid .g-item:hover .g-overlay { opacity: 1; }
+    .g-overlay span {
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* ===== CONTACT ===== */
+    #contact {
+      background: linear-gradient(135deg, #0D1A0A 0%, var(--brown-dark) 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #contact::before {
+      content: '"';
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 20rem;
+      color: rgba(232,160,32,0.03);
+      pointer-events: none;
+      line-height: 1;
+    }
+    #contact .section-title { color: var(--white); }
+    #contact .section-label { color: var(--gold-light); }
+    #contact .section-line { margin: 0 auto 50px; }
+
+    .contact-tagline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      font-style: italic;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 50px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .contact-cards {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(232,160,32,0.2);
+      border-radius: 16px;
+      padding: 20px 28px;
+      text-decoration: none;
+      color: white;
+      transition: all 0.3s;
+      min-width: 220px;
+    }
+    .contact-card:hover {
+      background: rgba(232,160,32,0.1);
+      border-color: rgba(232,160,32,0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    }
+    .contact-card i {
+      font-size: 1.6rem;
+      color: var(--gold);
+    }
+    .contact-card-info { text-align: left; }
+    .contact-card-label {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .contact-card-val {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    /* Social links */
+    .social-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .social-btn {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      border: 2px solid rgba(232,160,32,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-light);
+      font-size: 1.2rem;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .social-btn:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: white;
+      transform: translateY(-4px) scale(1.1);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--brown-dark);
+      border-top: 1px solid rgba(232,160,32,0.1);
+      padding: 30px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: gap;
+      gap: 16px;
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: var(--gold-light);
+      letter-spacing: 0.1em;
+    }
+    .footer-copy {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* ===== MOBILE MENU ===== */
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links {
+        position: fixed;
+        top: 0; right: -100%;
+        height: 100vh;
+        width: 280px;
+        background: var(--brown-dark);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        transition: right 0.4s ease;
+        z-index: 999;
+      }
+      .nav-links.open { right: 0; }
+      .nav-links a { font-size: 1.2rem; }
+
+      #about { grid-template-columns: 1fr; gap: 50px; }
+      .hero-img-wrap { display: none; }
+      .hero-content { max-width: 100%; }
+      .hero-stats { position: static; margin-top: 30px; justify-content: center; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-grid .g-item:nth-child(1) { grid-column: span 2; }
+      footer { flex-direction: column; text-align: center; }
+      .about-img-grid { grid-template-rows: 180px 180px; }
+    }
+
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Glowing dot for "live" feel */
+    .live-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #4CAF50;
+      display: inline-block;
+      margin-right: 4px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(76,175,80,0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(76,175,80,0); }
+    }
+
+    /* Music waveform animation */
+    .waveform {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      height: 20px;
+    }
+    .waveform span {
+      width: 3px;
+      background: var(--gold);
+      border-radius: 2px;
+      animation: wave 1.2s ease-in-out infinite;
+    }
+    .waveform span:nth-child(1) { animation-delay: 0s; height: 8px; }
+    .waveform span:nth-child(2) { animation-delay: 0.1s; height: 16px; }
+    .waveform span:nth-child(3) { animation-delay: 0.2s; height: 12px; }
+    .waveform span:nth-child(4) { animation-delay: 0.3s; height: 18px; }
+    .waveform span:nth-child(5) { animation-delay: 0.4s; height: 10px; }
+    @keyframes wave {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.3); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== LOADER ========== -->
+  <div id="loader">
+    <div class="loader-mic">🎤</div>
+    <div class="loader-logo">Petit Gaspri</div>
+    <div class="loader-sub">Rappeur Villageois • Officiel</div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav id="navbar">
+    <a href="#hero" class="nav-logo">Petit <span>Gaspri</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about" onclick="closeMenu()">À Propos</a></li>
+      <li><a href="#music" onclick="closeMenu()">Musique</a></li>
+      <li><a href="#gallery" onclick="closeMenu()">Galerie</a></li>
+      <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-pattern"></div>
+    <div class="hero-geo"></div>
+
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+
+    <div class="hero-content">
+      <div class="hero-tag">
+        <span class="live-dot"></span>
+        <span>Rappeur Officiel</span>
+        <div class="waveform"><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+      <h1 class="hero-title">
+        Petit<br><span class="highlight">Gaspri</span>
+      </h1>
+      <div class="hero-subtitle">Officiel</div>
+      <p class="hero-desc">
+        Le Rappeur Villageois ✊ — La voix brute de la rue, 
+        authentique et sans filtre. Rappeur de la boue, 
+        né pour briller. Son flow percutant touche les âmes 
+        de Cotonou au monde entier.
+      </p>
+      <div class="hero-btns">
+        <a href="#music" class="btn-primary">
+          <i class="fas fa-headphones"></i> Écouter Sa Musique
+        </a>
+        <a href="#contact" class="btn-outline">
+          <i class="fas fa-envelope"></i> Me Contacter
+        </a>
+      </div>
+    </div>
+
+    <!-- Right image -->
+    <div class="hero-img-wrap">
+      <img src="pha.jpg" alt="Petit Gaspri" 
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+      <div class="hero-img-placeholder" style="display:none">
+        <i class="fas fa-microphone-alt"></i>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">5.4K</div>
+        <div class="stat-label">Followers</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Authentique</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">✊</div>
+        <div class="stat-label">Villageois</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Découvrir</span>
+      <div class="arrow"></div>
+    </div>
+  </section>
+
+  <!-- ========== ABOUT ========== -->
+  <section id="about">
+    <div class="about-img-grid reveal-left">
+      <!-- Photo A - large top -->
+      <div class="img-item">
+        <img src="pha.jpg" alt="Petit Gaspri"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <div class="img-placeholder" style="display:none"><i class="fas fa-music"></i></div>
+      </div>
+      <!-- Photo B -->
+      <div class="img-item">
+        <img src="phb.jpg" alt="Petit Gaspri Studio"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <div class="img-placeholder" style="display:none"><i class="fas fa-microphone"></i></div>
+      </div>
+      <!-- Photo C -->
+      <div class="img-item">
+        <img src="phc.jpg" alt="Petit Gaspri Scène"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <div class="img-placeholder" style="display:none"><i class="fas fa-star"></i></div>
+      </div>
+    </div>
+
+    <div class="about-text reveal-right">
+      <span class="section-label">Qui est-il ?</span>
+      <h2 class="section-title">Le <span class="accent">Rappeur</span><br>Villageois</h2>
+      <div class="section-line"></div>
+      <blockquote class="about-quote">
+        « Rappeur villageois ✊ Rappeur de la boue 🤭 »
+      </blockquote>
+      <p class="about-body">
+        Petit Gaspri est un rappeur authentique dont l'art s'ancre profondément 
+        dans ses racines villageoises. Sa musique, c'est la voix de ceux qu'on 
+        n'entend pas — brute, puissante, sincère. Avec son flow unique et ses 
+        textes percutants, il raconte une réalité qui résonne dans le cœur de 
+        milliers de fans.
+      </p>
+      <p class="about-body">
+        Disponible sur <strong>Spotify</strong> et actif sur les réseaux sociaux, 
+        Petit Gaspri continue de construire sa légende une track à la fois, 
+        prouvant que le talent n'a pas besoin de la ville pour s'épanouir.
+      </p>
+      <div class="about-badges">
+        <span class="badge"><i class="fas fa-microphone-alt"></i> Artiste Rap</span>
+        <span class="badge"><i class="fab fa-spotify"></i> Sur Spotify</span>
+        <span class="badge"><i class="fab fa-facebook"></i> 5.4K Followers</span>
+        <span class="badge"><i class="fas fa-globe-africa"></i> Bénin</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== MUSIC ========== -->
+  <section id="music">
+    <div class="music-bg-pattern"></div>
+    <div class="reveal">
+      <span class="section-label">Discographie</span>
+      <h2 class="section-title">Sa <span style="color:var(--gold-light)">Musique</span></h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="music-grid">
+      <div class="music-card reveal" style="transition-delay:0.1s">
+        <div class="music-icon"><i class="fas fa-fire"></i></div>
+        <h3>Flow Villageois</h3>
+        <p>Des textes authentiques qui sortent des tripes — la rue, le village, la boue — transformés en art pur.</p>
+      </div>
+      <div class="music-card reveal" style="transition-delay:0.2s">
+        <div class="music-icon"><i class="fas fa-headphones-alt"></i></div>
+        <h3>Son Unique</h3>
+        <p>Un style inimitable qui mêle les rythmes africains au rap contemporain pour un résultat électrisant.</p>
+      </div>
+      <div class="music-card reveal" style="transition-delay:0.3s">
+        <div class="music-icon"><i class="fas fa-record-vinyl"></i></div>
+        <h3>Productions Live</h3>
+        <p>Présent sur scène avec une énergie débordante — chaque performance est un moment inoubliable.</p>
+      </div>
+    </div>
+
+    <div class="spotify-section reveal">
+      <p style="color:rgba(255,255,255,0.5); margin-bottom:24px; font-size:0.9rem; letter-spacing:0.1em; text-transform:uppercase;">
+        🎵 Retrouvez Petit Gaspri sur Spotify
+      </p>
+      <a href="https://open.spotify.com/search/Petit%20Gaspri" target="_blank" class="spotify-cta">
+        <i class="fab fa-spotify"></i> Écouter sur Spotify
+      </a>
+    </div>
+  </section>
+
+  <!-- ========== GALLERY ========== -->
+  <section id="gallery">
+    <div class="reveal" style="text-align:center; margin-bottom:60px;">
+      <span class="section-label">Photos</span>
+      <h2 class="section-title">Sa <span class="accent">Galerie</span></h2>
+      <div class="section-line" style="margin:0 auto;"></div>
+    </div>
+
+    <div class="gallery-grid">
+      <!-- Wide top photo -->
+      <div class="g-item reveal" style="transition-delay:0.1s">
+        <img src="phd.jpg" alt="Petit Gaspri"
+             onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#3D1F00,#1E5631)';" />
+        <div class="g-overlay"><span>Petit Gaspri Officiel</span></div>
+      </div>
+      <div class="g-item reveal" style="transition-delay:0.15s">
+        <img src="phe.jpg" alt="Petit Gaspri"
+             onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#2A1500,#2D7A45)';" />
+        <div class="g-overlay"><span>En Studio</span></div>
+      </div>
+      <div class="g-item reveal" style="transition-delay:0.2s">
+        <img src="phb.jpg" alt="Petit Gaspri"
+             onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#1E5631,#B87714)';" />
+        <div class="g-overlay"><span>Sur Scène</span></div>
+      </div>
+      <div class="g-item reveal" style="transition-delay:0.25s">
+        <img src="phc.jpg" alt="Petit Gaspri"
+             onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#B87714,#1E5631)';" />
+        <div class="g-overlay"><span>Dans Sa Zone</span></div>
+      </div>
+      <div class="g-item reveal" style="transition-delay:0.3s">
+        <img src="phf.jpg" alt="Petit Gaspri"
+             onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#3D1F00,#2D7A45)';" />
+        <div class="g-overlay"><span>Le Rappeur Villageois</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section id="contact">
+    <div class="reveal">
+      <span class="section-label">Booking & Contact</span>
+      <h2 class="section-title" style="color:white;">Contactez<br><span style="color:var(--gold-light)">Petit Gaspri</span></h2>
+      <div class="section-line" style="margin:16px auto 0;"></div>
+    </div>
+    <p class="contact-tagline reveal">
+      Pour les bookings, collaborations, ou simplement pour lui dire que son art vous touche…
+    </p>
+
+    <div class="contact-cards">
+      <a href="tel:+22967794647" class="contact-card reveal" style="transition-delay:0.1s">
+        <i class="fas fa-phone-alt"></i>
+        <div class="contact-card-info">
+          <div class="contact-card-label">Téléphone</div>
+          <div class="contact-card-val">+229 67 79 46 47</div>
+        </div>
+      </a>
+      <a href="mailto:petitgaspri@gmail.com" class="contact-card reveal" style="transition-delay:0.2s">
+        <i class="fas fa-envelope"></i>
+        <div class="contact-card-info">
+          <div class="contact-card-label">Email</div>
+          <div class="contact-card-val">petitgaspri@gmail.com</div>
+        </div>
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=100046027252493" target="_blank" class="contact-card reveal" style="transition-delay:0.3s">
+        <i class="fab fa-facebook"></i>
+        <div class="contact-card-info">
+          <div class="contact-card-label">Facebook</div>
+          <div class="contact-card-val">Petit Gaspri Officiel</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="social-row reveal">
+      <a href="https://www.facebook.com/profile.php?id=100046027252493" target="_blank" class="social-btn">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://open.spotify.com/search/Petit%20Gaspri" target="_blank" class="social-btn">
+        <i class="fab fa-spotify"></i>
+      </a>
+      <a href="https://wa.me/22967794647" target="_blank" class="social-btn">
+        <i class="fab fa-whatsapp"></i>
+      </a>
+      <a href="mailto:petitgaspri@gmail.com" class="social-btn">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    <div class="footer-logo">Petit Gaspri Officiel</div>
+    <div class="footer-copy">© 2026 Petit Gaspri. Tous droits réservés.</div>
+  </footer>
+
+  <!-- ========== JAVASCRIPT ========== -->
+  <script>
+    // ---- LOADER ----
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+      }, 2400);
+    });
+
+    // ---- PARTICLES ----
+    function createParticles() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        p.style.left = Math.random() * 100 + '%';
+        p.style.bottom = Math.random() * 40 + '%';
+        p.style.width = (Math.random() * 4 + 2) + 'px';
+        p.style.height = p.style.width;
+        p.style.animationDuration = (Math.random() * 8 + 4) + 's';
+        p.style.animationDelay = (Math.random() * 6) + 's';
+        p.style.opacity = Math.random() * 0.5;
+        container.appendChild(p);
+      }
+    }
+    createParticles();
+
+    // ---- NAVBAR scroll ----
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // ---- MOBILE MENU ----
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('navLinks').classList.remove('open');
+    }
+
+    // ---- SCROLL REVEAL ----
+    const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, i * 80);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
